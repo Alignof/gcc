@@ -19,6 +19,16 @@
    <http://www.gnu.org/licenses/>.
 */
 
+// anon namespace
+namespace {
+class pass_insert_lpad : public rtl_opt_pass {
+public:
+  pass_insert_lpad(gcc::context *ctxt)
+      : rtl_opt_pass(pass_data_insert_lpad, ctxt) {}
+
+}; // class pass_insert_lpad
+} // namespace
+
 rtl_opt_pass *make_pass_insert_lpad(gcc::context *ctxt) {
   return new pass_insert_lpad(ctxt);
 }
