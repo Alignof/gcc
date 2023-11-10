@@ -9649,6 +9649,9 @@ riscv_preferred_else_value (unsigned ifn, tree vectype, unsigned int nops,
   return default_preferred_else_value (ifn, vectype, nops, ops);
 }
 
+/* For checking Zicfilp extension */
+void riscv_zicfilp_check(void) {}
+
 /* Initialize the GCC target structure.  */
 #undef TARGET_ASM_ALIGNED_HI_OP
 #define TARGET_ASM_ALIGNED_HI_OP "\t.half\t"
