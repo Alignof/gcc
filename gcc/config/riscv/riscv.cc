@@ -9649,6 +9649,11 @@ riscv_preferred_else_value (unsigned ifn, tree vectype, unsigned int nops,
   return default_preferred_else_value (ifn, vectype, nops, ops);
 }
 
+/* gen landing pad instruction */
+rtx riscv_gen_lpad (void) {
+  return gen_lpad ();
+}
+
 /* For checking Zicfilp extension */
 void riscv_zicfilp_check(void) {}
 
