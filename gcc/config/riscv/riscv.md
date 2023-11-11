@@ -126,6 +126,9 @@
   ;; XTheadFmv unspec
   UNSPEC_XTHEADFMV
   UNSPEC_XTHEADFMV_HW
+
+  ;; Zicfilp extension
+  UNSPECV_LPAD
 ])
 
 (define_constants
@@ -2349,6 +2352,13 @@
   ""
   "* return TARGET_ZIHINTPAUSE ? \"pause\" : \".insn\t0x0100000f\";"
   [(set_attr "type" "atomic")])
+
+;; Zicfilp extension
+(define_insn "lpad"
+  [(unspec_volatile [(const_int 0)] UNSPECV_LPAD)]
+  ""
+  "auipc\tzero,0"
+  [(set_attr "type" "auipc")])
 
 ;;
 ;;  ....................
