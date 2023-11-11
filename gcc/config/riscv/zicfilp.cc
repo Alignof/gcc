@@ -58,6 +58,8 @@ const pass_data pass_data_insert_lpad = {
     0,             /* todo_flags_finish.  */
 };
 
+static unsigned int insert_lpad(void) { return 0; }
+
 class pass_insert_lpad : public rtl_opt_pass {
 public:
   pass_insert_lpad(gcc::context *ctxt)
