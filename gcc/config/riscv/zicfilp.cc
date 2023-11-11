@@ -60,7 +60,19 @@ const pass_data pass_data_insert_lpad = {
     0,             /* todo_flags_finish.  */
 };
 
-static unsigned int insert_lpad(void) { return 0; }
+static unsigned int insert_lpad(void) {
+  rtx lpad_insn;
+  rtx_insn *insn;
+  basic_block bb;
+
+  if (!cgraph_node::get(cfun->decl)->only_called_directly_p()) {
+    bb = ENTRY_BLOCK_PTR_FOR_FN(cfun)->next_bb;
+    insn = BB_HEAD(bb);
+    lpad_insn = riscv_gen_lpad();
+    emit_insn_before(lpad_insn, insn);
+  }
+  return 0;
+}
 
 class pass_insert_lpad : public rtl_opt_pass {
 public:

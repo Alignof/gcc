@@ -644,4 +644,6 @@ extern bool th_print_operand_address (FILE *, machine_mode, rtx);
 extern bool riscv_use_divmod_expander (void);
 void riscv_init_cumulative_args (CUMULATIVE_ARGS *, tree, rtx, tree, int);
 
+extern rtx riscv_gen_lpad (void);
+
 #endif /* ! GCC_RISCV_PROTOS_H */
