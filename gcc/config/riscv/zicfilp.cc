@@ -21,27 +21,29 @@
 
 #define IN_TARGET_CODE 1
 
+// clang-format off
 #include "config.h"
 #define INCLUDE_STRING
-#include "attribs.h"
-#include "backend.h"
-#include "cfgrtl.h"
-#include "cgraph.h"
-#include "coretypes.h"
-#include "dumpfile.h"
-#include "emit-rtl.h"
-#include "gimple-iterator.h"
-#include "gimple.h"
-#include "gimplify.h"
-#include "memmodel.h"
-#include "rtl-iter.h"
-#include "rtl.h"
-#include "stringpool.h"
 #include "system.h"
+#include "coretypes.h"
+#include "backend.h"
 #include "target.h"
-#include "tm_p.h"
-#include "tree-pass.h"
+#include "rtl.h"
 #include "tree.h"
+#include "memmodel.h"
+#include "gimple.h"
+#include "tm_p.h"
+#include "stringpool.h"
+#include "attribs.h"
+#include "emit-rtl.h"
+#include "gimplify.h"
+#include "gimple-iterator.h"
+#include "dumpfile.h"
+#include "rtl-iter.h"
+#include "cfgrtl.h"
+#include "tree-pass.h"
+#include "cgraph.h"
+// clang-format on
 
 // anon namespace
 namespace {
