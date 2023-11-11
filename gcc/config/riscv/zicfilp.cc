@@ -65,6 +65,13 @@ public:
   pass_insert_lpad(gcc::context *ctxt)
       : rtl_opt_pass(pass_data_insert_lpad, ctxt) {}
 
+  virtual bool gate(function *) {
+    // return zicfilp_enabled();
+    return true;
+  }
+
+  virtual unsigned int execute(function *) { return insert_lpad(); }
+
 }; // class pass_insert_lpad
 } // namespace
 
