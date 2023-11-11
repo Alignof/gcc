@@ -19,8 +19,45 @@
    <http://www.gnu.org/licenses/>.
 */
 
+#define IN_TARGET_CODE 1
+
+#include "config.h"
+#define INCLUDE_STRING
+#include "attribs.h"
+#include "backend.h"
+#include "cfgrtl.h"
+#include "cgraph.h"
+#include "coretypes.h"
+#include "dumpfile.h"
+#include "emit-rtl.h"
+#include "gimple-iterator.h"
+#include "gimple.h"
+#include "gimplify.h"
+#include "memmodel.h"
+#include "rtl-iter.h"
+#include "rtl.h"
+#include "stringpool.h"
+#include "system.h"
+#include "target.h"
+#include "tm_p.h"
+#include "tree-pass.h"
+#include "tree.h"
+
 // anon namespace
 namespace {
+
+const pass_data pass_data_insert_lpad = {
+    RTL_PASS,      /* type.  */
+    "lpad",        /* name.  */
+    OPTGROUP_NONE, /* optinfo_flags.  */
+    TV_MACH_DEP,   /* tv_id.  */
+    0,             /* properties_required.  */
+    0,             /* properties_provided.  */
+    0,             /* properties_destroyed.  */
+    0,             /* todo_flags_start.  */
+    0,             /* todo_flags_finish.  */
+};
+
 class pass_insert_lpad : public rtl_opt_pass {
 public:
   pass_insert_lpad(gcc::context *ctxt)
