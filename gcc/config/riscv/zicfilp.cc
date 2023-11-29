@@ -76,6 +76,30 @@ static unsigned int insert_lpad(void) {
         emit_insn_after(lpad_insn, insn);
         continue;
       }
+
+      /* There could still be more labels that are valid targets of a BTI J
+       * instuction. To find them we start looking through the JUMP_INSN. If it
+       * jumps to a jump table, then we find all labels of the jump table to
+       * protect with a BTI J.
+       */
+      if (JUMP_P(insn)) {
+        rtx_jump_table_data *table;
+        if (tablejump_p(insn, NULL, &table)) {
+          rtvec vec = table->get_labels();
+          int j;
+          rtx_insn *label;
+
+          for (j = GET_NUM_ELEM(vec) - 1; j >= 0; --j) {
+            label = as_a<rtx_insn *>(XEXP(RTVEC_ELT(vec, j), 0));
+            rtx_insn *next = next_nonnote_nondebug_insn(label);
+            if (riscv_lpad_insn_p(next))
+              continue;
+
+            lpad_insn = riscv_gen_lpad();
+            emit_insn_after(lpad_insn, label);
+          }
+        }
+      }
     }
   }
 
