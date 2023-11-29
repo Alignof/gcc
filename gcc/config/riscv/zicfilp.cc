@@ -100,9 +100,17 @@ static unsigned int insert_lpad(void) {
           }
         }
       }
+
+      // call setjmp()
+      if (CALL_P(insn) && (find_reg_note(insn, REG_SETJMP, NULL))) {
+        lpad_insn = riscv_gen_lpad();
+        emit_insn_after(lpad_insn, insn);
+        continue;
+      }
     }
   }
 
+  // after function
   if (!cgraph_node::get(cfun->decl)->only_called_directly_p()) {
     bb = ENTRY_BLOCK_PTR_FOR_FN(cfun)->next_bb;
     insn = BB_HEAD(bb);
