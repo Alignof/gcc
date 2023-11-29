@@ -65,12 +65,27 @@ static unsigned int insert_lpad(void) {
   rtx_insn *insn;
   basic_block bb;
 
+  FOR_EACH_BB_FN(bb, cfun) {
+    for (insn = BB_HEAD(bb); insn != NEXT_INSN(BB_END(bb));
+         insn = NEXT_INSN(insn)) {
+
+      // non-local goto
+      if (LABEL_P(insn) &&
+          (LABEL_PRESERVE_P(insn) || bb->flags & BB_NON_LOCAL_GOTO_TARGET)) {
+        lpad_insn = riscv_gen_lpad();
+        emit_insn_after(lpad_insn, insn);
+        continue;
+      }
+    }
+  }
+
   if (!cgraph_node::get(cfun->decl)->only_called_directly_p()) {
     bb = ENTRY_BLOCK_PTR_FOR_FN(cfun)->next_bb;
     insn = BB_HEAD(bb);
     lpad_insn = riscv_gen_lpad();
     emit_insn_before(lpad_insn, insn);
   }
+
   return 0;
 }
 
@@ -87,6 +102,7 @@ public:
   virtual unsigned int execute(function *) { return insert_lpad(); }
 
 }; // class pass_insert_lpad
+
 } // namespace
 
 rtl_opt_pass *make_pass_insert_lpad(gcc::context *ctxt) {
