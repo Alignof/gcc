@@ -9654,6 +9654,16 @@ rtx riscv_gen_lpad (void) {
   return gen_lpad ();
 }
 
+/* Check if INSN is a BTI J insn.  */
+bool riscv_lpad_insn_p (rtx_insn *insn) {
+  if (!insn || !INSN_P (insn)) {
+    return false;
+  }
+
+  rtx pat = PATTERN (insn);
+  return GET_CODE (pat) == UNSPEC_VOLATILE && XINT (pat, 1) == UNSPECV_LPAD;
+}
+
 /* For checking Zicfilp extension */
 void riscv_zicfilp_check(void) {}
 

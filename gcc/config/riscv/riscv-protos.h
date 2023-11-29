@@ -645,5 +645,6 @@ extern bool riscv_use_divmod_expander (void);
 void riscv_init_cumulative_args (CUMULATIVE_ARGS *, tree, rtx, tree, int);
 
 extern rtx riscv_gen_lpad (void);
+extern bool riscv_lpad_insn_p (rtx_insn *insn);
 
 #endif /* ! GCC_RISCV_PROTOS_H */
