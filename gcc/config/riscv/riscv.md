@@ -2357,7 +2357,7 @@
 (define_insn "lpad"
   [(unspec_volatile [(const_int 0)] UNSPECV_LPAD)]
   ""
-  "auipc\tzero,0"
+  ".balign 4\nauipc\tzero,0"
   [(set_attr "type" "auipc")])
 
 ;;
