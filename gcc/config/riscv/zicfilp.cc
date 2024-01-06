@@ -77,11 +77,6 @@ static unsigned int insert_lpad(void) {
         continue;
       }
 
-      /* There could still be more labels that are valid targets of a BTI J
-       * instuction. To find them we start looking through the JUMP_INSN. If it
-       * jumps to a jump table, then we find all labels of the jump table to
-       * protect with a BTI J.
-       */
       if (JUMP_P(insn)) {
         rtx_jump_table_data *table;
         if (tablejump_p(insn, NULL, &table)) {
@@ -113,9 +108,9 @@ static unsigned int insert_lpad(void) {
   // after function
   if (!cgraph_node::get(cfun->decl)->only_called_directly_p()) {
     bb = ENTRY_BLOCK_PTR_FOR_FN(cfun)->next_bb;
-    insn = BB_HEAD(bb);
+    head_insn = BB_HEAD(bb);
     lpad_insn = riscv_gen_lpad();
-    emit_insn_before(lpad_insn, insn);
+    emit_insn_before(lpad_insn, head_insn);
   }
 
   return 0;
