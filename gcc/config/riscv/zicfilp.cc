@@ -62,7 +62,9 @@ const pass_data pass_data_insert_lpad = {
 
 static unsigned int insert_lpad(void) {
   rtx lpad_insn;
+  rtx alignment;
   rtx_insn *insn;
+  rtx_insn *head_insn;
   basic_block bb;
 
   FOR_EACH_BB_FN(bb, cfun) {
@@ -74,6 +76,8 @@ static unsigned int insert_lpad(void) {
           (LABEL_PRESERVE_P(insn) || bb->flags & BB_NON_LOCAL_GOTO_TARGET)) {
         lpad_insn = riscv_gen_lpad();
         emit_insn_after(lpad_insn, insn);
+        alignment = riscv_gen_align_4bytes();
+        emit_insn_after(alignment, insn);
         continue;
       }
 
@@ -92,6 +96,8 @@ static unsigned int insert_lpad(void) {
 
             lpad_insn = riscv_gen_lpad();
             emit_insn_after(lpad_insn, label);
+            alignment = riscv_gen_align_4bytes();
+            emit_insn_after(alignment, label);
           }
         }
       }
@@ -100,6 +106,8 @@ static unsigned int insert_lpad(void) {
       if (CALL_P(insn) && (find_reg_note(insn, REG_SETJMP, NULL))) {
         lpad_insn = riscv_gen_lpad();
         emit_insn_after(lpad_insn, insn);
+        alignment = riscv_gen_align_4bytes();
+        emit_insn_after(alignment, insn);
         continue;
       }
     }
@@ -109,6 +117,8 @@ static unsigned int insert_lpad(void) {
   if (!cgraph_node::get(cfun->decl)->only_called_directly_p()) {
     bb = ENTRY_BLOCK_PTR_FOR_FN(cfun)->next_bb;
     head_insn = BB_HEAD(bb);
+    alignment = riscv_gen_align_4bytes();
+    emit_insn_before(alignment, head_insn);
     lpad_insn = riscv_gen_lpad();
     emit_insn_before(lpad_insn, head_insn);
   }
