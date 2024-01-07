@@ -9654,12 +9654,12 @@ rtx riscv_gen_lpad (void) {
   return gen_lpad ();
 }
 
-/* gen landing pad instruction */
+/* gen .balign 4 */
 rtx riscv_gen_align_4bytes (void) {
   return gen_align_4bytes ();
 }
 
-/* Check if INSN is a BTI J insn.  */
+/* Check if INSN is a lpad insn.  */
 bool riscv_lpad_insn_p (rtx_insn *insn) {
   if (!insn || !INSN_P (insn)) {
     return false;
