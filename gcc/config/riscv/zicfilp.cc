@@ -74,10 +74,11 @@ static unsigned int insert_lpad(void) {
       // non-local goto
       if (LABEL_P(insn) &&
           (LABEL_PRESERVE_P(insn) || bb->flags & BB_NON_LOCAL_GOTO_TARGET)) {
+        alignment = riscv_gen_align_4bytes();
+        emit_insn_before(alignment, insn);
+
         lpad_insn = riscv_gen_lpad();
         emit_insn_after(lpad_insn, insn);
-        alignment = riscv_gen_align_4bytes();
-        emit_insn_after(alignment, insn);
         continue;
       }
 
@@ -94,10 +95,11 @@ static unsigned int insert_lpad(void) {
             if (riscv_lpad_insn_p(next))
               continue;
 
+            alignment = riscv_gen_align_4bytes();
+            emit_insn_before(alignment, label);
+
             lpad_insn = riscv_gen_lpad();
             emit_insn_after(lpad_insn, label);
-            alignment = riscv_gen_align_4bytes();
-            emit_insn_after(alignment, label);
           }
         }
       }
@@ -117,8 +119,10 @@ static unsigned int insert_lpad(void) {
   if (!cgraph_node::get(cfun->decl)->only_called_directly_p()) {
     bb = ENTRY_BLOCK_PTR_FOR_FN(cfun)->next_bb;
     head_insn = BB_HEAD(bb);
+
     alignment = riscv_gen_align_4bytes();
     emit_insn_before(alignment, head_insn);
+
     lpad_insn = riscv_gen_lpad();
     emit_insn_before(lpad_insn, head_insn);
   }
