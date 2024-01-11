@@ -9651,7 +9651,11 @@ riscv_preferred_else_value (unsigned ifn, tree vectype, unsigned int nops,
 
 /* gen landing pad instruction */
 rtx riscv_gen_lpad (void) {
-  return gen_lpad ();
+  return gen_lpad (GEN_INT(0));
+}
+
+rtx riscv_gen_lpad_label (uint32_t label) {
+  return gen_lpad (GEN_INT(label & 0xfffff));
 }
 
 /* gen .balign 4 */
