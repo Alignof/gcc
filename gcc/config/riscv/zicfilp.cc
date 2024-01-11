@@ -118,18 +118,19 @@ static unsigned int insert_lpad(void) {
   // after function
   if (!cgraph_node::get(cfun->decl)->only_called_directly_p()) {
     // insert `.balign 4` before the label
+    // -- type --
     // bb -> ‘basic_block’ {aka ‘basic_block_def*’}
     // BB_HEAD(bb) -> rtx_insn*
     // alignment -> rtx {aka rtx_def*}
     bb = ENTRY_BLOCK_PTR_FOR_FN(cfun);
     alignment = riscv_gen_align_4bytes();
     BB_HEAD(bb) = as_a <rtx_insn *> (alignment);
-    //emit_insn_before(alignment, head_insn);
 
     // insert `lpad` instruction before the first instruction
     bb = ENTRY_BLOCK_PTR_FOR_FN(cfun)->next_bb;
     head_insn = BB_HEAD(bb);
-    lpad_insn = riscv_gen_lpad();
+
+    lpad_insn = riscv_gen_lpad_label(301);
     emit_insn_before(lpad_insn, head_insn);
   }
 
