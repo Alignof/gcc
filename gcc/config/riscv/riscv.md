@@ -2355,7 +2355,7 @@
 
 ;; Zicfilp extension
 (define_insn "lpad"
-  [(match_operand 0 "const_int_operand")]
+  [(unspec_volatile [(match_operand 0 "const_int_operand")] UNSPECV_LPAD)]
   ""
   "auipc\tzero,%0"
   [(set_attr "type" "auipc")])
