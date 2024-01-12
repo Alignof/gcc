@@ -67,6 +67,8 @@ static unsigned int insert_lpad(void) {
   rtx_insn *head_insn;
   basic_block bb;
 
+  static uint32_t label_value = rand() % 0xfffff;
+
   FOR_EACH_BB_FN(bb, cfun) {
     for (insn = BB_HEAD(bb); insn != NEXT_INSN(BB_END(bb));
          insn = NEXT_INSN(insn)) {
@@ -125,7 +127,7 @@ static unsigned int insert_lpad(void) {
     alignment = riscv_gen_align_4bytes();
     emit_insn_before(alignment, head_insn);
     
-    lpad_insn = riscv_gen_lpad_label(301);
+    lpad_insn = riscv_gen_lpad_label(label_value);
     emit_insn_before(lpad_insn, head_insn);
   }
 
