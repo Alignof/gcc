@@ -8115,6 +8115,10 @@ riscv_override_options_internal (struct gcc_options *opts)
     sorry ("Current RISC-V GCC cannot support VLEN greater than 4096bit for "
 	   "'V' Extension");
 
+  opts->x_str_align_jumps = "4";
+  opts->x_str_align_labels = "4";
+  opts->x_str_align_functions = "4";
+
   /* Convert -march to a chunks count.  */
   riscv_vector_chunks = riscv_convert_vector_bits (opts);
 }

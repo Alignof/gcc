@@ -1,5 +1,5 @@
-/* Branch Target Identification for AArch64 architecture.
-   Copyright (C) 2019-2023 Free Software Foundation, Inc.
+/* RISC-V Zicfilp extension
+   Copyright (C) 2023-2024 n.takana
    Contributed by Norimasa Takana
 
    This file is part of GCC.
@@ -124,8 +124,8 @@ static unsigned int insert_lpad(void) {
     head_insn = BB_HEAD(bb);
 
     // insert `.balign 4` before the label
-    alignment = riscv_gen_align_4bytes();
-    emit_insn_before(alignment, head_insn);
+    //alignment = riscv_gen_align_4bytes();
+    //emit_insn_before(alignment, head_insn);
     
     lpad_insn = riscv_gen_lpad_label(label_value);
     emit_insn_before(lpad_insn, head_insn);
