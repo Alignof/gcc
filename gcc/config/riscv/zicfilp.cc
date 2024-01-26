@@ -67,6 +67,7 @@ static unsigned int insert_lpad(void) {
   rtx_insn *head_insn;
   basic_block bb;
 
+  srand((unsigned int)time(NULL));
   static uint32_t label_value = rand() % 0xfffff;
 
   FOR_EACH_BB_FN(bb, cfun) {
@@ -79,7 +80,7 @@ static unsigned int insert_lpad(void) {
         alignment = riscv_gen_align_4bytes();
         emit_insn_before(alignment, insn);
 
-        lpad_insn = riscv_gen_lpad();
+        lpad_insn = riscv_gen_lpad_label(label_value);
         emit_insn_after(lpad_insn, insn);
         continue;
       }
@@ -100,7 +101,7 @@ static unsigned int insert_lpad(void) {
             alignment = riscv_gen_align_4bytes();
             emit_insn_before(alignment, label);
 
-            lpad_insn = riscv_gen_lpad();
+            lpad_insn = riscv_gen_lpad_label(label_value);
             emit_insn_after(lpad_insn, label);
           }
         }
@@ -108,7 +109,7 @@ static unsigned int insert_lpad(void) {
 
       // call setjmp()
       if (CALL_P(insn) && (find_reg_note(insn, REG_SETJMP, NULL))) {
-        lpad_insn = riscv_gen_lpad();
+        lpad_insn = riscv_gen_lpad_label(label_value);
         emit_insn_after(lpad_insn, insn);
         alignment = riscv_gen_align_4bytes();
         emit_insn_after(alignment, insn);
@@ -123,10 +124,6 @@ static unsigned int insert_lpad(void) {
     bb = ENTRY_BLOCK_PTR_FOR_FN(cfun)->next_bb;
     head_insn = BB_HEAD(bb);
 
-    // insert `.balign 4` before the label
-    //alignment = riscv_gen_align_4bytes();
-    //emit_insn_before(alignment, head_insn);
-    
     lpad_insn = riscv_gen_lpad_label(label_value);
     emit_insn_before(lpad_insn, head_insn);
   }
