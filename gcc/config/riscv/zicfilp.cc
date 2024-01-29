@@ -124,7 +124,11 @@ static unsigned int insert_lpad(void) {
     bb = ENTRY_BLOCK_PTR_FOR_FN(cfun)->next_bb;
     head_insn = BB_HEAD(bb);
 
-    lpad_insn = riscv_gen_lpad_label(label_value);
+    if (cgraph_node::get(cfun->decl)->local_p()) {
+        lpad_insn = riscv_gen_lpad_label(label_value);
+    } else {
+        lpad_insn = riscv_gen_lpad();
+    }
     emit_insn_before(lpad_insn, head_insn);
   }
 
