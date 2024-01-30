@@ -2360,6 +2360,12 @@
   "auipc\tzero,%0"
   [(set_attr "type" "auipc")])
 
+(define_insn "set_label"
+  [(unspec_volatile [(match_operand 0 "const_int_operand")] UNSPECV_LPAD)]
+  ""
+  "lui\tx7,%0"
+  [(set_attr "type" "auipc")])
+
 (define_insn "align_4bytes"
   [(const_int 0)]
   ""

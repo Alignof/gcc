@@ -9662,6 +9662,11 @@ rtx riscv_gen_lpad_label (uint32_t label) {
   return gen_lpad (GEN_INT(label & 0xfffff));
 }
 
+/* gen `lui x7, label` */
+rtx riscv_gen_set_label (uint32_t label) {
+  return gen_set_label (GEN_INT(label));
+}
+
 /* gen .balign 4 */
 rtx riscv_gen_align_4bytes (void) {
   return gen_align_4bytes ();
