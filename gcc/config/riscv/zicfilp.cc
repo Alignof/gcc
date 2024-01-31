@@ -132,6 +132,29 @@ static unsigned int insert_lpad(void) {
     emit_insn_before(lpad_insn, head_insn);
   }
 
+  FOR_EACH_BB_FN(bb, cfun) {
+    for (insn = BB_HEAD(bb); insn != NEXT_INSN(BB_END(bb)); insn = NEXT_INSN(insn)) {
+      if (JUMP_P(insn) && riscv_set_label_insn_p(PREV_INSN(insn))) {
+        rtx_jump_table_data *table;
+        if (tablejump_p(insn, NULL, &table)) {
+          rtvec vec = table->get_labels();
+          rtx_insn *label;
+
+          for (int j = GET_NUM_ELEM(vec) - 1; j >= 0; --j) {
+            label = as_a<rtx_insn *>(XEXP(RTVEC_ELT(vec, j), 0));
+            rtx_insn *next = next_nonnote_nondebug_insn(label);
+            if (riscv_lpad_insn_p(next)) {
+                rtx lpad_pat = PATTERN(next);
+                set_label = riscv_gen_set_label(label_value);
+                emit_insn_before(set_label, insn);
+                break;
+            }
+          }
+        }
+      }
+    }
+  }
+
   return 0;
 }
 
