@@ -61,6 +61,7 @@ const pass_data pass_data_insert_lpad = {
 };
 
 static unsigned int insert_lpad(void) {
+  rtx set_label;
   rtx lpad_insn;
   rtx alignment;
   rtx_insn *insn;
@@ -134,7 +135,7 @@ static unsigned int insert_lpad(void) {
 
   FOR_EACH_BB_FN(bb, cfun) {
     for (insn = BB_HEAD(bb); insn != NEXT_INSN(BB_END(bb)); insn = NEXT_INSN(insn)) {
-      if (JUMP_P(insn) && riscv_set_label_insn_p(PREV_INSN(insn))) {
+      if (JUMP_P(insn) && !riscv_set_label_insn_p(PREV_INSN(insn))) {
         rtx_jump_table_data *table;
         if (tablejump_p(insn, NULL, &table)) {
           rtvec vec = table->get_labels();
@@ -144,7 +145,6 @@ static unsigned int insert_lpad(void) {
             label = as_a<rtx_insn *>(XEXP(RTVEC_ELT(vec, j), 0));
             rtx_insn *next = next_nonnote_nondebug_insn(label);
             if (riscv_lpad_insn_p(next)) {
-                rtx lpad_pat = PATTERN(next);
                 set_label = riscv_gen_set_label(label_value);
                 emit_insn_before(set_label, insn);
                 break;

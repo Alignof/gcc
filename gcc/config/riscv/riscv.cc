@@ -9683,7 +9683,7 @@ bool riscv_lpad_insn_p (rtx_insn *insn) {
 }
 
 /* Check if INSN is a lpad insn.  */
-bool riscv_gen_set_label_insn_p (rtx_insn *insn) {
+bool riscv_set_label_insn_p (rtx_insn *insn) {
   if (!insn || !INSN_P (insn)) {
     return false;
   }
