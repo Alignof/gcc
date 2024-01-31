@@ -129,6 +129,7 @@
 
   ;; Zicfilp extension
   UNSPECV_LPAD
+  UNSPECV_SET_LABEL
 ])
 
 (define_constants
@@ -2361,7 +2362,7 @@
   [(set_attr "type" "auipc")])
 
 (define_insn "set_label"
-  [(unspec_volatile [(match_operand 0 "const_int_operand")] UNSPECV_LPAD)]
+  [(unspec_volatile [(match_operand 0 "const_int_operand")] UNSPECV_SET_LABEL)]
   ""
   "lui\tx7,%0"
   [(set_attr "type" "auipc")])
