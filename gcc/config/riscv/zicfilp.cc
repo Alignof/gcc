@@ -61,6 +61,7 @@ const pass_data pass_data_insert_lpad = {
 };
 
 static unsigned int insert_lpad(void) {
+  rtx set_label;
   rtx lpad_insn;
   rtx alignment;
   rtx_insn *insn;

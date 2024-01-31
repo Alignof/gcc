@@ -646,8 +646,9 @@ void riscv_init_cumulative_args (CUMULATIVE_ARGS *, tree, rtx, tree, int);
 
 extern rtx riscv_gen_lpad (void);
 extern rtx riscv_gen_lpad_label (uint32_t label);
-extern rtx riscv_gen_set_label (void);
+extern rtx riscv_gen_set_label (uint32_t label);
 extern rtx riscv_gen_align_4bytes (void);
 extern bool riscv_lpad_insn_p (rtx_insn *insn);
+extern bool riscv_set_label_insn_p (rtx_insn *insn);
 
 #endif /* ! GCC_RISCV_PROTOS_H */
